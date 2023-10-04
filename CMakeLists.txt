@@ -8,6 +8,7 @@ project (hpl)
 set(SOURCES
     src/main.cc
     src/lexer.cc
+    src/tools.cc
 )
 
 # Add an executable with the above sources

@@ -3,19 +3,15 @@
 #include <locale>
 #include <codecvt>
 
-Lexer::Lexer(std::istream& stream) : stream_{stream} {}
+Lexer::Lexer(const std::string& str) : buffer_{str} {}
 
-std::vector<Token> Lexer::Parse() {
+std::vector<Token> Lexer::Parse(const bool comments) {
   std::vector<Token> tokens;
-
   std::wstring_convert<std::codecvt_utf8<char32_t>, char32_t> conv;
-  std::string buffer;
-  std::string token_str;
-  while (stream_ >> token_str) buffer += token_str;
 
-  for (const char32_t token_char : conv.from_bytes(buffer)) {
+  for (const char32_t token_char : conv.from_bytes(buffer_)) {
     Token token{GetToken_(token_char)};
-    // if (token == Token::COMMENT) continue;
+    if (!comments && token == Token::COMMENT) continue;
     tokens.push_back(token);
   }
 

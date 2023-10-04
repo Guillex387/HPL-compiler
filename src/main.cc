@@ -5,13 +5,14 @@
 #include <string>
 
 #include "../include/lexer.h"
+#include "../include/tools.h"
 
-int main() {
-  std::string filename;
-  std::cin >> filename;
-  std::ifstream file{filename};
-  Lexer lexer{file};
-  for (const auto token : lexer.Parse()) {
+int main(const int argc, const char** argv) {
+  std::string file_name{argv[1]};
+  std::string hand_code{ReadFile(file_name)};
+
+  Lexer lexer{hand_code};
+  for (const auto token : lexer.Parse(true)) {
     switch (token) {
       case Token::NEXT:
         std::cout << "NEXT\n";
@@ -38,5 +39,4 @@ int main() {
         std::cout << "COMMENT\n";
     }
   }
-  file.close();
 }

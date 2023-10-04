@@ -1,7 +1,7 @@
 #ifndef TOKENS_H_
 #define TOKENS_H_
 
-#include <iostream>
+#include <string>
 #include <vector>
 
 // 👉
@@ -41,14 +41,16 @@ class Lexer {
     /**
      * Constructor for lexer
      *
-     * @param stream The input stream for read the text language
+     * @param str The input text
      */
-    Lexer(std::istream& stream);
+    Lexer(const std::string& str);
 
     /**
      * Parse the input stream to a vector of tokens
+     *
+     * @param comments The comments are not included in the vector token
      */
-    std::vector<Token> Parse();
+    std::vector<Token> Parse(const bool comments = false);
 
   private:
     /**
@@ -59,7 +61,7 @@ class Lexer {
      */
     Token GetToken_(const char32_t letter) const;
 
-    std::istream& stream_;
+    std::string buffer_;
 };
 
 #endif
