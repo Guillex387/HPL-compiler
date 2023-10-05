@@ -2,7 +2,7 @@
 #define TOKENS_H_
 
 #include <string>
-#include <vector>
+#include <list>
 
 // 👉
 const char32_t kNextCell{128073};
@@ -50,7 +50,7 @@ class Lexer {
      *
      * @param comments The comments are not included in the vector token
      */
-    std::vector<Token> Parse(const bool comments = false);
+    std::list<Token> Parse(const bool comments = false);
 
   private:
     /**

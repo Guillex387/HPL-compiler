@@ -9,6 +9,7 @@ set(SOURCES
     src/main.cc
     src/lexer.cc
     src/chunk.cc
+    src/compiler.cc
     src/tools.cc
 )
 

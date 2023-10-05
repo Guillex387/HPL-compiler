@@ -1,12 +1,12 @@
 #include "../include/lexer.h"
-#include <vector>
+#include <list>
 #include <locale>
 #include <codecvt>
 
 Lexer::Lexer(const std::string& str) : buffer_{str} {}
 
-std::vector<Token> Lexer::Parse(const bool comments) {
-  std::vector<Token> tokens;
+std::list<Token> Lexer::Parse(const bool comments) {
+  std::list<Token> tokens;
   std::wstring_convert<std::codecvt_utf8<char32_t>, char32_t> conv;
 
   for (const char32_t token_char : conv.from_bytes(buffer_)) {

@@ -1,6 +1,6 @@
 ; header
 section .data
-  fmt: db "%u", 0xa, 0x0 ; or %c by default
+  fmt: db "%u\n", 0x0 ; or %c by default
 
 section .bss
   mem: resb 30
