@@ -8,6 +8,7 @@ project (hpl)
 set(SOURCES
     src/main.cc
     src/lexer.cc
+    src/chunk.cc
     src/tools.cc
 )
 

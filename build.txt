@@ -1,0 +1,1 @@
+nasm -felf64 test.s && gcc -no-pie -nostartfiles test.o
