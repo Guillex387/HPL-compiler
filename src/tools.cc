@@ -21,3 +21,14 @@ std::string ReadFile(const std::string& file_name) {
 
   return buffer;
 }
+
+void WriteFile(const std::string& file_name, const std::string& content) {
+  std::ofstream stream;
+  stream.open(file_name);
+  if (!stream.is_open()) {
+    std::cerr << "Error opening \"" << file_name << "\"\n";
+    std::exit(EXIT_FAILURE);
+  }
+  stream << content;
+  stream.close();
+}

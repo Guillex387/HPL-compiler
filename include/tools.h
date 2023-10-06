@@ -11,4 +11,12 @@
  */
 std::string ReadFile(const std::string& file_name);
 
+/**
+ * Function to write a string in a file
+ *
+ * @param file_name
+ * @param content
+ */
+void WriteFile(const std::string& file_name, const std::string& content);
+
 #endif

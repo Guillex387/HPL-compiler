@@ -5,12 +5,29 @@
 
 const std::string kHeaderFmt =
   "section .data\n"
-  "\tfmt: db \"%s\", 0x0\n"
+  "\tfmt: db \"%s\", 0xa, 0x0\n"
   "section .bss\n"
   "\tmem: resb %d\n"
   "section .text\n"
   "extern printf\n"
   "global _start\n"
+  "print_num:\n"
+  "\tpush rcx\n"
+  "\tlea rdi, fmt\n"
+  "\txor rsi, rsi\n"
+  "\tmov byte sil, [mem+rcx]\n"
+  "\tcall printf\n"
+  "\tpop rcx\n"
+  "\tret\n"
+  "print_ascii:\n"
+  "\tpush rcx\n"
+  "\tmov rax, 1\n"
+  "\tmov rdi, 1\n"
+  "\tlea rsi, [mem+rcx]\n"
+  "\tmov rdx, 1\n"
+  "\tsyscall\n"
+  "\tpop rcx\n"
+  "\tret\n"
   "_start:\n"
   "\txor rcx, rcx\n";
 
@@ -58,16 +75,11 @@ const std::string kEndFmt =
 
 const std::string kShowFmt =
   "; Show cell\n"
-  "\tpush rcx\n"
-  "\tpush rbp\n"
-  "\tmov rbp, rsp\n"
-  "\tlea rdi, fmt\n"
-  "\txor rsi, rsi\n"
-  "\tmov byte sil, [mem+rcx]\n"
-  "\tcall printf\n"
-  "\tmov rsp, rbp\n"
-  "\tpop rbp\n"
-  "\tpop rcx\n";
+  "\tcall print_num\n";
+
+const std::string kShowAsciiFmt =
+  "; Show cell\n"
+  "\tcall print_ascii\n";
 
 /**
  * Generates the code of token in assembly
@@ -82,10 +94,9 @@ class ChunkGenerator {
     /**
      * Generate header of assembly code
      *
-     * @param format C format for print the cells values
      * @param memory Number of cells
      */
-    std::string Header(const std::string& format, const int memory) const;
+    std::string Header(const int memory) const;
 
     /**
      * Generate the kernel exit
@@ -129,7 +140,7 @@ class ChunkGenerator {
     /**
      * Generate the code to print the cell value
      */
-    std::string Show() const;
+    std::string Show(const bool ascii) const;
 };
 
 #endif

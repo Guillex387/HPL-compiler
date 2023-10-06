@@ -4,10 +4,10 @@
 
 ChunkGenerator::ChunkGenerator() {}
 
-std::string ChunkGenerator::Header(const std::string& format, const int memory) const {
+std::string ChunkGenerator::Header(const int memory) const {
   std::string output;
-  output.resize(kHeaderFmt.length() + format.length() + 10);
-  sprintf(&output[0], kHeaderFmt.c_str(), format.c_str(), memory);
+  output.resize(kHeaderFmt.length() + 10);
+  sprintf(&output[0], kHeaderFmt.c_str(), "%u", memory);
   return output;
 }
 
@@ -45,6 +45,6 @@ std::string ChunkGenerator::End(const int id) const {
   return output;
 }
 
-std::string ChunkGenerator::Show() const {
-  return kShowFmt;
+std::string ChunkGenerator::Show(const bool ascii) const {
+  return ascii ? kShowAsciiFmt : kShowFmt;
 }

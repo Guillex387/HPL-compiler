@@ -9,9 +9,9 @@
 
 
 Compiler::Compiler(const std::list<Token>& tokens,
-             const std::string& format,
+             const bool ascii,
              const int memory) :
-  tokens_{tokens}, format_{format}, memory_{memory} {}
+  tokens_{tokens}, ascii_{ascii}, memory_{memory} {}
 
 
 std::string Compiler::Compile() const {
@@ -20,7 +20,7 @@ std::string Compiler::Compile() const {
   std::stack<size_t> loop_id;
   size_t seed{0};
 
-  output += generator.Header(format_, memory_);
+  output += generator.Header(memory_);
   for (const auto token : tokens_) {
     switch (token) {
       case Token::NEXT:
@@ -45,7 +45,7 @@ std::string Compiler::Compile() const {
         loop_id.pop();
         break;
       case Token::SHOW:
-        output += generator.Show();
+        output += generator.Show(ascii_);
         break;
       default:
         break;
