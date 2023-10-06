@@ -32,3 +32,12 @@ void WriteFile(const std::string& file_name, const std::string& content) {
   stream << content;
   stream.close();
 }
+
+void LinkProgram(const std::string& asm_file, const std::string& output_file) {
+  std::string command;
+  command += "nasm -felf64 ";
+  command += asm_file + " -o temp.o";
+  command += " && gcc -no-pie -nostartfiles temp.o -o " + output_file;
+  command += " && rm -f " + asm_file + " temp.o";
+  std::system(command.c_str());
+}

@@ -1,4 +1,5 @@
 #include <codecvt>
+#include <cstdlib>
 #include <fstream>
 #include <iostream>
 #include <list>
@@ -15,7 +16,7 @@
  * Parse the console arguments
  */
 argparse::ArgumentParser GetArgs(const int argc, const char** argv) {
-  argparse::ArgumentParser program{"program_name", "v0.1.0"};
+  argparse::ArgumentParser program{"hpl", "v0.1.0"};
 
   program.add_description("This a small compiler (linux x86_64) made for the hand programming language");
   program.add_argument("input_file")
@@ -24,13 +25,17 @@ argparse::ArgumentParser GetArgs(const int argc, const char** argv) {
     .help("Prints the cells in decimal format and not in ascii")
     .default_value(false)
     .implicit_value(true);
+  program.add_argument("--asm")
+    .help("The output file is the result in assembly")
+    .default_value(false)
+    .implicit_value(true);
   program.add_argument("--memory")
     .help("Amount of cells in the program")
     .default_value(3000)
     .scan<'i', int>();
   program.add_argument("-o", "--output")
     .help("Set the output file of the code")
-    .default_value(std::string{"out.s"});
+    .default_value(std::string{"a.out"});
 
   try {
     program.parse_args(argc, argv);
@@ -50,13 +55,20 @@ int main(const int argc, const char** argv) {
   std::string input_file{parsed.get("input_file")};
   std::string output_file{parsed.get("-o")};
   bool ascii{parsed["--decimal"] != true};
+  bool asm_flag{parsed["--asm"] == true};
   int memory{parsed.get<int>("--memory")};
 
   std::string input{ReadFile(input_file)};
   Lexer lexer{input};
   std::list<Token> tokens{lexer.Parse()};
   Compiler compiler{tokens, ascii, memory};
+  
+  if (asm_flag) {
+    WriteFile(output_file, compiler.Compile());
+  } else {
+    WriteFile("temp.s", compiler.Compile());
+    LinkProgram("temp.s", output_file);
+  }
 
-  WriteFile(output_file, compiler.Compile());
   return 0;
 }

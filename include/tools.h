@@ -19,4 +19,12 @@ std::string ReadFile(const std::string& file_name);
  */
 void WriteFile(const std::string& file_name, const std::string& content);
 
+/**
+ * Converts the assembly output to an executable
+ *
+ * @param asm_file
+ * @param output_file Name of the output binary
+ */
+void LinkProgram(const std::string& asm_file, const std::string& output_file);
+
 #endif
