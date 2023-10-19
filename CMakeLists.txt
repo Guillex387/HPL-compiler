@@ -1,6 +1,7 @@
 # Set the minimum version of CMake that can be used
 # $ cmake --version
 cmake_minimum_required(VERSION 3.5)
+set (CMAKE_CXX_STANDARD 20)
 # set_property(TARGET hpl PROPERTY CXX_STANDARD 17)
 
 project (hpl)

@@ -4,6 +4,9 @@
 #include "lexer.h"
 #include <list>
 #include <string>
+#include <utility>
+
+typedef std::pair<size_t, Token> TokenAccumulated;
 
 /**
  * A class to compile the hand lang tokens into assembly
@@ -25,7 +28,18 @@ class Compiler {
      * Compile the array of token in assembly code
      */
     std::string Compile() const;
+
   private:
+    /**
+     * Optimize the tokens accumulating the operations
+     */
+    std::list<TokenAccumulated> Optimize_() const;
+
+    /**
+     * Check the tokens that are not accumulative
+     */
+    bool IsAcc_(const Token token) const;
+
     std::list<Token> tokens_;
     bool ascii_;
     int memory_;

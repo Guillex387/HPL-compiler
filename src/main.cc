@@ -12,11 +12,13 @@
 #include "../include/compiler.h"
 #include "../lib/argparse.hpp"
 
+#define VERSION "v0.2.0"
+
 /**
  * Parse the console arguments
  */
 argparse::ArgumentParser GetArgs(const int argc, const char** argv) {
-  argparse::ArgumentParser program{"hpl", "v0.1.0"};
+  argparse::ArgumentParser program{"hpl", VERSION};
 
   program.add_description("This a small compiler (linux x86_64) made for the hand programming language");
   program.add_argument("input_file")

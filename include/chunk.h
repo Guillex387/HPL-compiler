@@ -5,9 +5,9 @@
 
 const std::string kHeaderFmt =
   "section .data\n"
-  "\tfmt: db \"%s\", 0xa, 0x0\n"
+  "\tfmt: db \"%u\", 0xa, 0x0\n"
   "section .bss\n"
-  "\tmem: resb %d\n"
+  "\tmem: resb {}\n"
   "section .text\n"
   "extern printf\n"
   "global _start\n"
@@ -38,40 +38,40 @@ const std::string kFooterFmt =
   "\tsyscall\n";
 
 const std::string kNextFmt =
-  "; Next cell\n"
-  "\tinc rcx\n";
+  "; Next cell x{0}\n"
+  "\tadd rcx, {0}\n";
 
 const std::string kPrevFmt =
-  "; Prev cell\n"
-  "\tdec rcx\n";
+  "; Prev cell x{0}\n"
+  "\tsub rcx, {0}\n";
 
 const std::string kIncFmt =
-  "; Increment cell\n"
+  "; Increment cell x{0}\n"
   "\txor rdx, rdx\n"
   "\tmov byte dl, [mem+rcx]\n"
-  "\tinc rdx\n"
+  "\tadd rdx, {0}\n"
   "\tmov byte [mem+rcx], dl\n";
 
 const std::string kDecFmt =
-  "; Decrement cell\n"
+  "; Decrement cell x{0}\n"
   "\txor rdx, rdx\n"
   "\tmov byte dl, [mem+rcx]\n"
-  "\tdec rdx\n"
+  "\tsub rdx, {0}\n"
   "\tmov byte [mem+rcx], dl\n";
 
 const std::string kLoopFmt =
   "; Loop begin\n"
-  "loop_%d:\n"
+  "loop_{0}:\n"
   "\txor rax, rax\n"
   "\txor rdx, rdx\n"
   "\tmov byte dl, [mem+rcx]\n"
   "\tcmp rdx, rax\n"
-  "\tje loop_%d_end\n";
+  "\tje loop_{0}_end\n";
 
 const std::string kEndFmt =
   "; Loop end\n"
-  "\tjmp loop_%d\n"
-  "loop_%d_end:\n";
+  "\tjmp loop_{0}\n"
+  "loop_{0}_end:\n";
 
 const std::string kShowFmt =
   "; Show cell\n"
@@ -106,22 +106,22 @@ class ChunkGenerator {
     /**
      * Generate the next code
      */
-    std::string Next() const;
+    std::string Next(const size_t acc) const;
 
     /**
      * Generate the prev code
      */
-    std::string Prev() const;
+    std::string Prev(const size_t acc) const;
 
     /**
      * Generate the inc code
      */
-    std::string Inc() const;
+    std::string Inc(const size_t acc) const;
 
     /**
      * Generate the dec code
      */
-    std::string Dec() const;
+    std::string Dec(const size_t acc) const;
 
     /**
      * Generate the loop begin code

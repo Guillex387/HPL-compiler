@@ -1,6 +1,7 @@
 #include "../include/tools.h"
 #include <cstdlib>
 #include <fstream>
+#include <format>
 
 std::string ReadFile(const std::string& file_name) {
   std::ifstream stream;
@@ -34,10 +35,5 @@ void WriteFile(const std::string& file_name, const std::string& content) {
 }
 
 void LinkProgram(const std::string& asm_file, const std::string& output_file) {
-  std::string command;
-  command += "nasm -felf64 ";
-  command += asm_file + " -o temp.o";
-  command += " && gcc -no-pie -nostartfiles temp.o -o " + output_file;
-  command += " && rm -f " + asm_file + " temp.o";
-  std::system(command.c_str());
+  std::system(std::format("nasm -felf64 {0} -o temp.o && gcc -no-pie -nostartfiles temp.o -o {1} && rm -f {0} temp.o", asm_file, output_file).c_str());
 }
